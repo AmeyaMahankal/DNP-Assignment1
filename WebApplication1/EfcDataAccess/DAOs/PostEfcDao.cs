@@ -1,6 +1,7 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EfcDataAccess.DAOs;
@@ -21,9 +22,31 @@ public class PostEfcDao : IPostDao
         return added.Entity;
     }
 
-    public Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto dto)
+    public async Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto dto)
     {
-        throw new NotImplementedException();
+        IQueryable<Post> query = context.Posts.Include(post => post.Poster).AsQueryable();
+
+        if (!string.IsNullOrEmpty(dto.username))
+        {
+            query = query.Where(post =>
+                post.Poster.UserName.ToLower().Equals(dto.username.ToLower()));
+        }
+
+        if (dto.UserId != null)
+        {
+            query = query.Where(t => t.Poster.Id == dto.UserId);
+        }
+
+        if (!string.IsNullOrEmpty(dto.TitleContains))
+        {
+            query = query.Where(t =>
+                t.PostTitle.ToLower().Contains(dto.TitleContains.ToLower()));
+        }
+
+        List<Post> result = await query.ToListAsync();
+        return result;
+
+
     }
 
     public Task<Post?> GetByIdAsync(int id)
