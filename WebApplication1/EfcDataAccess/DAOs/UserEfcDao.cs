@@ -29,13 +29,22 @@ public class UserEfcDao : IUserDao
         return existing;
     }
 
-    public Task<User?> GetByIdAsync(int dtoOwnerId)
+    public async Task<User?> GetByIdAsync(int dtoOwnerId)
     {
-        throw new NotImplementedException();
+        User? user = await context.Users.FindAsync(dtoOwnerId);
+        return user;
     }
 
-    public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
+    public async Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
     {
-        throw new NotImplementedException();
+        IQueryable<User> usersQuery = context.Users.AsQueryable();
+        if (searchParameters.UsernameContains != null)
+        {
+            usersQuery = usersQuery.Where(u =>
+                u.UserName.ToLower().Contains(searchParameters.UsernameContains.ToLower()));
+        }
+
+        IEnumerable<User> result = await usersQuery.ToListAsync();
+        return result;
     }
 }

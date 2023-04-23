@@ -1,4 +1,6 @@
-﻿namespace Domain.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Domain.Models;
 
 public class User
 {
@@ -9,6 +11,6 @@ public class User
     public string Password { get; set; }
     
     public string Role { get; set; }
-    
+    [JsonIgnore]
     public ICollection<Post> Posts { get; set; }
 }

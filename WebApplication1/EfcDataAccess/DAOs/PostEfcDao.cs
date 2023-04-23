@@ -1,14 +1,24 @@
 ﻿using Application.DaoInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EfcDataAccess.DAOs;
 
 public class PostEfcDao : IPostDao
 {
-    public Task<Post> CreateAsync(Post post)
+    private readonly EfcFileContext context;
+
+    public PostEfcDao(EfcFileContext context)
     {
-        throw new NotImplementedException();
+        this.context = context;
+    }
+    
+    public async Task<Post> CreateAsync(Post post)
+    {
+        EntityEntry<Post> added = await context.Posts.AddAsync(post);
+        await context.SaveChangesAsync();
+        return added.Entity;
     }
 
     public Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto dto)
