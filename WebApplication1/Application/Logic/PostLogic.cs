@@ -60,12 +60,13 @@ public class PostLogic: IPostLogic
         string descToUse = dto.Description ?? existing.PostTitle;
 
         Post updated = new(userToUse, titleToUse, descToUse);
+        /*
         {
             updated.PostTitle = titleToUse;
             updated.PostBody = descToUse;
             updated.Id = existing.Id;
         }
-
+*/
        
         await PostDao.UpdateAsync(updated);
 

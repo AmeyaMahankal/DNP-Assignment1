@@ -10,7 +10,7 @@ public class EfcFileContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = Container.db");
+        optionsBuilder.UseSqlite("Data Source = ../EfcDataAccess/Container.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
