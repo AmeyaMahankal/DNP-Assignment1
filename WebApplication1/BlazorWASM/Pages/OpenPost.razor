@@ -1,0 +1,45 @@
+﻿@page "/OpenPost/{id:int}"
+@using HttpClients.ClientInterfaces
+@using Domain.Models
+@inject IPostService PostService;
+@inject NavigationManager navManager;
+
+<div>
+    <label>@title</label>
+    <label>@creator</label>
+    <label>@desc</label>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private IEnumerable<Post>? posts;
+    private Post thePost;
+    private string title;
+    private string desc;
+    private string creator;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            posts = await PostService.GetPosts();
+            thePost = posts.FirstOrDefault(post => post.Id == id);
+
+            title = thePost.PostTitle;
+            desc = thePost.PostBody;
+            creator = thePost.Poster.UserName;
+
+
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+
+}
