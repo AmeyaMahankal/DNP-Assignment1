@@ -28,6 +28,7 @@ else
         {
             <div class="user-card">
                 <label>@user.Id - @user.UserName</label>
+                <img class="imgforuser" src=@url width="100" height="120"/>
             </div>
         }
     </div>
@@ -36,6 +37,7 @@ else
 @code {
     private IEnumerable<User>? users;
     private string msg = "";
+    private string url = "https://cdn-icons-png.flaticon.com/512/666/666201.png";
 
     protected override async Task OnInitializedAsync()
     {

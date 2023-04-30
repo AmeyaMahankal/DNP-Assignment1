@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWASM", "BlazorWASM\Bl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClients", "HttpClients\HttpClients.csproj", "{A86B4FE1-D52B-4D62-AFD1-3C4EE34B97A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfcDataAccess", "EfcDataAccess\EfcDataAccess.csproj", "{5C0FEEF5-D822-46C1-BAF4-25772F948B16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{A86B4FE1-D52B-4D62-AFD1-3C4EE34B97A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A86B4FE1-D52B-4D62-AFD1-3C4EE34B97A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A86B4FE1-D52B-4D62-AFD1-3C4EE34B97A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C0FEEF5-D822-46C1-BAF4-25772F948B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0FEEF5-D822-46C1-BAF4-25772F948B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0FEEF5-D822-46C1-BAF4-25772F948B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0FEEF5-D822-46C1-BAF4-25772F948B16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

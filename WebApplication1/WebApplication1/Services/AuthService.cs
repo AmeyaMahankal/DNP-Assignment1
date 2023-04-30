@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using Application.DaoInterfaces;
 using Application.LogicInterface;
 using Domain.DTOs;
 using Domain.Models;
@@ -11,94 +12,29 @@ namespace WebApplication1.Services;
 public class AuthService : IAuthService
 {
 
-    private const string filepath = "data.json";
-    private DataContainer? dataContainer;
+    private IUserDao userDao;
 
-    private void LoadData()
+    public AuthService(IUserDao dao)
     {
-        if (dataContainer!=null) return;
-
-        if (!File.Exists(filepath))
-        {
-            dataContainer = new()
-            {
-                Posts = new List<Post>(),
-                Users = new List<User>()
-            };
-            return;
-        }
-
-        string content = File.ReadAllText(filepath);
-        dataContainer = JsonSerializer.Deserialize<DataContainer>(content);
-    }
-
-    public IList<User> jusers
-    {
-        
-        get
-        {
-            dataContainer = new()
-            {
-                Posts = new List<Post>(),
-                Users = new List<User>()
-            };
-            string content = File.ReadAllText(filepath);
-            dataContainer = JsonSerializer.Deserialize<DataContainer>(content);
-            return (IList<User>)dataContainer.Users;
-        }
+        userDao = dao;
     }
     
-    private  IList<User> users = new List<User>
-    {
-        new User
-        {
-            Id = 1,
-            Password = "ilikecats",
-            Role = "Admin",
-            UserName = "bobby"
-        },
-        new User
-        {
-            Id = 2,
-            Password = "jefffff",
-            Role = "User",
-            UserName = "kevin"
-        }
-    };
-    
 
-    public Task<User> ValidateUser(string username, string password)
+    public async Task<User> ValidateUser(string username, string password)
     {
-        User? existinguser = jusers.FirstOrDefault(u =>
-            u.UserName.Equals(username, StringComparison.OrdinalIgnoreCase));
-        
-        if (existinguser == null)
+        User? exist = await userDao.GetByUsernameAsync(username);
+       
+        if (exist == null)
         {
             throw new Exception("User not found");
         }
 
-        if (!existinguser.Password.Equals(password))
+        if (!exist.Password.Equals(password))
         {
             throw new Exception("Password mismatch");
         }
 
-        return Task.FromResult(existinguser);
+        return await Task.FromResult(exist);
     }
 
-    public Task RegisterUser(User user)
-    {
-        if (string.IsNullOrEmpty(user.UserName))
-        {
-            throw new ValidationException("Username cannot be null");
-        }
-
-        if (string.IsNullOrEmpty(user.Password))
-        {
-            throw new ValidationException("Password cannot be null");
-        }
-        
-        users.Add(user);
-
-        return Task.CompletedTask;
-    }
 }
